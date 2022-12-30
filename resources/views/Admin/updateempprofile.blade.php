@@ -199,55 +199,56 @@ form img{
     color: #cc0000;
 }
 </style>
-
 <div class="container2">
+<form action="/update" method='POST'enctype="multipart/form-data">
+{{ csrf_field() }}
 @foreach($result as $detaa)
-<form action='/updateempprofile' method='POST'>
-  @csrf
+<input type="hidden" class="text" placeholder="Comapny's ID" value="{{ $detaa->id}}"name="id" >
+
   <img src="{{$detaa->company_logo}}"style="width:150px;height:150px; float:left;border-radius:50%;margin-right:25px;border;" name ="image" required>
-    <br><br><input type ="file" name="image" value="{{ $detaa->company_logo}}">
+    <br><br><input type ="file" name="image" value="{{ $detaa->company_logo}}" id="image">
     <div class="hr3">
     <hr>
     </div>
     <div class="user-details">
       <div class="input-box">
         <span class="details">Company Name</span>
-        <input type="text" class="text" placeholder="Comapny's Name" value="{{ $detaa->company_name}}"name="name" required >
+        <input type="text" class="text" placeholder="Comapny's Name" value="{{ $detaa->company_name}}"name="name" id="name" required >
       </div>
 
       <div class="input-box">
         <span class="details">Register No</span>
-        <input type="text" class="text"placeholder ="Company's register number"  value="{{ $detaa->reg_no}}" name="reg_no" id="reg_no" required readonly>
+        <input type="text" class="text"placeholder ="Company's register number"  value="{{ $detaa->reg_no}}" name="reg_no" id="reg_no" required>
       </div>
       
       <div class="input-box">
         <span class="details">Address</span>
-        <input type="text" class="text" placeholder="Company's Address" value="{{ $detaa->company_address}}" name="address" required>
+        <input type="text" class="text" placeholder="Company's Address" value="{{ $detaa->company_address}}" name="address" id="address" required>
       </div>
 
       <div class="input-box">
         <span class="details">Office Number</span>
-        <input type="text" class="text" placeholder="Company's office number"  value="{{ $detaa->company_officenum}}" ame="officenum" required>
+        <input type="text" class="text" placeholder="Company's office number"  value="{{ $detaa->company_officenum}}" name="officenum" id="officenum" required>
       </div>
 
       <div class="input-box">
         <span class="details">Fax</span>
-        <input type="text" class="text" placeholder="Company's fax number" value="{{ $detaa->company_faxnumber}}" name="faxnum" >
+        <input type="text" class="text" placeholder="Company's fax number" value="{{ $detaa->company_faxnumber}}" name="faxnum" id="faxnum" >
       </div>
 
       <div class="input-box">
         <span class="details">Email</span>
-        <input type="text" class="text" placeholder="Company's Email Address" value="{{ $detaa->company_email}}"name="email" required>
+        <input type="text" class="text" placeholder="Company's Email Address" value="{{ $detaa->company_email}}"name="email" id="email" required>
       </div>
 
       <div class="input-box">
         <span class="details">Password</span>
-        <input type="text" class="text" placeholder="Password" value="{{ $detaa->company_password}}"name="password" required>
+        <input type="text" class="text" placeholder="Password" value="{{ $detaa->company_password}}"name="password" id="password" required>
       </div>
 
       <div class="input-box">
         <span class="details">Confirm Password</span>
-        <p>{{ $detaa->company_confirmpass}}</p>
+        <input type="text" class="text" placeholder="Password" value="{{ $detaa->company_confirmpass}}"name="confirmpassword" id="confirmpassword" required>
       </div>
       
 

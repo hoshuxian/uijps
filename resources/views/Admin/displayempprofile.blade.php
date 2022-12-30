@@ -210,7 +210,7 @@ table th{
 @endif
 
 <div class="myprofile">
-<form action="/updateempprofile/{{ $detaa->reg_no}} " method='get'>
+<form action="/updateempprofile/{{ $detaa->id}} " method='get'>
 
 @if($detaa->company_logo)
         <img src="{{$detaa->company_logo}}" name="image" class="emp_pic">

@@ -62,8 +62,9 @@ Route::get('/displaystdprofile/{id}', 'App\Http\Controllers\UserController@displ
 });*/
 
 Route::get('/displayempprofile/{reg_no}', 'App\Http\Controllers\UserController@displayempprofile');
-Route::get('/updateempprofile/{reg_no}', 'App\Http\Controllers\UserController@updateempprofile');
-Route::post('/updateempprofile', 'App\Http\Controllers\UserController@update');
+Route::get('/updateempprofile/{id}', 'App\Http\Controllers\UserController@updateempprofile');
+Route::post('/update', 'App\Http\Controllers\UserController@update');
+
 Route::get('/showstdprofile/{id}', 'App\Http\Controllers\UserController@showstdprofile');
 
 //Manage Feedback
@@ -83,8 +84,8 @@ Route::post('/submitempfeedback', 'App\Http\Controllers\FeedbackController@submi
 Route::get('/searchcompany', 'App\Http\Controllers\UserController@viewcompanylist');
 Route::get('/searchcompany/search', 'App\Http\Controllers\UserController@companylist');
 Route::get('/displaycompanyprofile/{reg_no}', 'App\Http\Controllers\UserController@displaycompanyprofile');
-Route::get('/logout', [UserController::class, 'destroy'])
-                ->name('logout');
+//Route::get('/logout', [UserController::class, 'destroy'])
+                //->name('logout');
 
 //Manage search student Profile
 Route::get('/searchstudent', 'App\Http\Controllers\UserController@viewstdlist');

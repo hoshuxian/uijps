@@ -221,25 +221,29 @@ function displayempprofile($reg_no)
     return view('\Admin\displayempprofile', ['result' => $result]);
 }
 
-public function updateempprofile($reg_no)
+public function updateempprofile($id)
 {
-    $result = employer::select('*')->where('reg_no', '=', $reg_no)->get();
+    $result = employer::select('*')->where('id', '=', $id)->get();
     return view('\Admin\updateempprofile', ['result' => $result]);
 }
 
-public function update(Request $request)
-{
-        $shows = employer::find($request->reg_no);
-        $shows->company_name=$request->input('name');
-        $shows->company_address=$request->input('address');
-        $shows->company_officenum=$request->input('officenum');
-        $shows->company_faxnumber=$request->input('faxnum');
-        $shows->company_email=$request->input('email');
-        $shows->company_size=$request->input('company');
-        $shows->company_description=$request->input('description');
-        $shows->company_logo = $request->input('image');
-        $shows->update();
-        return redirect('searchempprofile')->with('successMsg','Profile Successful created !');
+function update(Request $req)
+    {
+            $var = employer::find($req->id);
+            $var->company_name=$req->input('name');
+            $var->reg_no=$req->input('reg_no');
+            $var->company_address=$req->input('address');
+            $var->company_officenum=$req->input('officenum');
+            $var->company_faxnumber=$req->input('faxnum');
+            $var->company_email=$req->input('email');
+            $var->company_password=$req->input('password');
+            $var->company_confirmpass=$req->input('confirmpassword');
+            $var->company_size=$req->input('company');
+            $var->company_description=$req->input('description');
+            $var->company_logo=$req->input('image');
+            $var->update();
+            return redirect('searchempprofile')->with('successMsg','Profile Successful created !');
+
 }
 
 function showstdprofile($id)

@@ -407,7 +407,7 @@ section form .form-control select:focus {
           <img src="/login.png" alt=""/>
           </div>
           <div class="form-box">
-            <form action="trylogin" method="GET">
+            <form action="trylogin" method="post">
             @csrf
               <div class="form-control">
                 <h2>Hello Again!</h2>
@@ -427,7 +427,7 @@ section form .form-control select:focus {
                     </select>
 </div>
                 </div>
-                <span>Forgot Password?</span>
+                <a href="/forgetpassword"><span>Forgot Password?</span></a>
                 <input type="Submit" value="Login" id="loginBtn" />
               </div>
             </form>

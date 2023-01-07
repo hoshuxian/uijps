@@ -161,22 +161,6 @@ form img{
   border: 2px solid black;
 }
 
-.input-box p{
-    margin: 5px 0 2px 0;
-  width: calc(100% / 2 -20px);
-  height: 45px;
-  width: 120%;
-  outline: none;
-  border-radius: 5px;
-  border: 1px solid #ccc;
-  padding-left: 15px;
-  font-size: 16px;
-  border-bottom-width: 2px;
-  transition: all 0.3s ease;
-  border-color: #9b59b6;
-  padding-top: 10px;
-}
-
 .alert-success{
     width: 65%;
     height: 30px;
@@ -203,7 +187,7 @@ form img{
 <form action="/update" method='POST'enctype="multipart/form-data">
 {{ csrf_field() }}
 @foreach($result as $detaa)
-<input type="hidden" class="text" placeholder="Comapny's ID" value="{{ $detaa->id}}"name="id" >
+<input type="hidden" class="text" placeholder="Company's ID" value="{{ $detaa->id}}"name="id" >
 
   <img src="{{$detaa->company_logo}}"style="width:150px;height:150px; float:left;border-radius:50%;margin-right:25px;border;" name ="image" required>
     <br><br><input type ="file" name="image" value="{{ $detaa->company_logo}}" id="image">
@@ -248,7 +232,7 @@ form img{
 
       <div class="input-box">
         <span class="details">Confirm Password</span>
-        <input type="text" class="text" placeholder="Password" value="{{ $detaa->company_confirmpass}}"name="confirmpassword" id="confirmpassword" required>
+        <input type="text" class="text" placeholder="Confirm Password" value="{{ $detaa->company_confirmpass}}"name="confirmpassword" id="confirmpassword" required>
       </div>
       
 

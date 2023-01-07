@@ -556,10 +556,16 @@ color: #1DC4E7;
     <!--<div class="logo">
         <img src = " {{ URL('/umplogo.png') }} " alt="ump" width="200" height="100"> 
     </div>-->
+    @foreach(Session::get('result') as $detaa)
     <div class="pic">
-        <img src ="profilepic.jpg" class="profile_image" alt="">
+    @if($detaa->std_pic)
+    <img class="std_pic" src="{{$detaa->std_pic}}" name="image">
+@else
+    <img class="std_pic" src="/default.jpg" name="image"/>
+@endif
     </div>
-    <h2>username</h2>
+    <h2>{{$detaa->std_name}}</h2>
+    @endforeach
     <ul>
         
         <li class="list active">

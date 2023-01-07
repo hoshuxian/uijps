@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Employer;
+use App\Models\studentratingscale;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
 use Image;
@@ -43,8 +44,10 @@ class UserController extends Controller
         $var->std_faculty=$req->sfaculty;
         $var->std_description=$req->sdescription;
         $var->save();
-        
-        return redirect('login')->with('successMsg','Sign Up successfully !');	
+        $email = $req->input('std_email'); 
+        $result = student::select('id')->where('std_email', '=', $email)->get();
+        $req->session()->put('result',$result);
+        return redirect('studentratingform')->with('successMsg','Sign Up successfully !');	
         }
     }
 
@@ -67,15 +70,17 @@ class UserController extends Controller
     
     //Manage Login
 
-    function login(Request $req)
-    {
-        $role_type = $req->input('role'); 
+    function login(Request $req){
+       // return $req->input();
+       $role_type = $req->input('role'); 
         if ($role_type === 'student') {
             $email = $req->input('email'); 
             $password = $req->input('password'); 
-            $deta = Student::select('std_email','std_password')->where('std_email','LIKE', '%' . $email . '%')->where('std_password','=', $password)->get();
+            $deta = Student::select('std_email','std_password')->where('std_email','=', $email)->where('std_password','=', $password)->get();
             if (count ( $deta ) >0){
-            return redirect('feedback');
+                $result = student::select('*')->where('std_email', '=', $email)->get();
+                $req->session()->put('result',$result);
+                return redirect('showstdprofile');
             }else{
                 return view('\Login\login')->with('failedMsg','Email and password unmatched !');
             }
@@ -84,7 +89,10 @@ class UserController extends Controller
             $password = $req->input('password'); 
             $deta = employer::select('company_email','company_password')->where('company_email','LIKE', '%' . $email . '%')->where('company_password','=', $password)->get();
             if (count ( $deta ) >0){
-            return redirect('empfeedback');
+                $result = employer::select('*')->where('company_email', '=', $email)->get();
+                //$req-> session(['result' => request()->all()]);
+                $req->session()->put('result',$result);
+                return redirect('showempprofile');
             }else{
                 return view('\Login\login')->with('failedMsg','Email and password unmatched !');
             }
@@ -92,6 +100,27 @@ class UserController extends Controller
             return view('\Sign Up\signup')->with('failedMsg','Login Unsuccessful');
         }
     }
+
+    function tryreset(Request $req)
+    {
+        $result = $req->input('email'); 
+        $req->session()->put('result',$result);
+        return redirect('resetpassword');
+    }
+    
+    function reset(Request $req)
+    {
+
+        if($req->session()->has('result')){
+            $result=session('result');
+            $var = student::where('std_email',$result)->first();
+            $var->std_password=$req->input('password');
+            $var->std_confirmpassword=$req->input('confirmpassword');
+            $var->update();
+            return view('\Login\login')->with('successMsg','Reset password successful!');
+        }
+
+}
 
     //Manage Student
     //Create New Student Profile
@@ -137,6 +166,7 @@ class UserController extends Controller
             $imagename = time() . '.' . $imageuploaded->getClientOriginalExtension();
             $imagepath = public_path('/');
             $imageuploaded->move($imagepath,$imagename);
+        }
             //Image::make($image)->resize(300,300)->save(public_path('/uploads/student/'.$filename));*/
             $var = new employer;
             $var->company_name=$req->name;
@@ -152,8 +182,6 @@ class UserController extends Controller
             $var->company_logo = '/' . $imagename;
             $var->save();
             return redirect('searchempprofile')->with('successMsg','Profile Successful created !');
-    
-        }
 
 }
 
@@ -229,6 +257,12 @@ public function updateempprofile($id)
 
 function update(Request $req)
     {
+        if (request()->has('image')){
+            $imageuploaded = request()->file('image');
+            $imagename = time() . '.' . $imageuploaded->getClientOriginalExtension();
+            $imagepath = public_path('/');
+            $imageuploaded->move($imagepath,$imagename);
+        }
             $var = employer::find($req->id);
             $var->company_name=$req->input('name');
             $var->reg_no=$req->input('reg_no');
@@ -240,9 +274,9 @@ function update(Request $req)
             $var->company_confirmpass=$req->input('confirmpassword');
             $var->company_size=$req->input('company');
             $var->company_description=$req->input('description');
-            $var->company_logo=$req->input('image');
+            $var->company_logo = '/' . $imagename;
             $var->update();
-            return redirect('searchempprofile')->with('successMsg','Profile Successful created !');
+            return redirect('searchempprofile')->with('successMsg','Profile Successful updated !');
 
 }
 
@@ -251,6 +285,133 @@ function showstdprofile($id)
 {
     $result = student::select('*')->where('id', '=', $id)->get();
     return view('\Student\showstdprofile', ['result' => $result]);
+}
+
+function showempprofile(Request $req)
+
+{
+    if($req->session()->has('result')){
+        $result=session('result.0.id');
+        $result = student::select('*')->where('id', '=', $result)->get();
+    return view('\Employer\showempprofile', ['result' => $result]);
+    }
+}
+
+public function editempprofile($id)
+{
+    $result = employer::select('*')->where('id', '=', $id)->get();
+    return view('\Employer\editempprofile', ['result' => $result]);
+}
+
+public function editprofile($id)
+{
+    $result = student::select('*')->where('id', '=', $id)->get();
+    return view('\Student\editprofile', ['result' => $result]);
+}
+
+function edit(Request $req)
+    {
+        if (request()->has('image') ){
+            $imageuploaded = request()->file('image');
+            $imagename = time() . '.' . $imageuploaded->getClientOriginalExtension();
+            $imagepath = public_path('/');
+            $imageuploaded->move($imagepath,$imagename);
+        }
+
+        if (request()->has('resume') ){
+            $resumeuploaded = request()->file('resume');
+            $resumename = time() . '.' . $resumeuploaded->getClientOriginalExtension();
+            $resumepath = public_path('/');
+            $resumeuploaded->move($resumepath,$resumename);
+        }
+
+        if($req->session()->has('result')){
+            $result=session('result.0.id');
+            $var = student::find($result);
+            $var->std_name=$req->input('name');
+            $var->std_matric=$req->input('matric');
+            $var->std_address=$req->input('address');
+            $var->std_phonenum=$req->input('phonenum');
+            $var->std_email=$req->input('email');
+            $var->std_password=$req->input('password');
+            $var->std_confirmpassword=$req->input('confirmpassword');
+            $var->std_faculty=$req->input('faculty');
+            $var->std_description=$req->input('description');
+            $var->resume='/' . $resumename;
+            $var->std_pic = '/' . $imagename;
+            $var->update();
+            $result = student::select('*')->where('id', '=', $result)->get();
+            $req->session()->put('result',$result);
+            return view('\Student\showstdprofile', ['result' => $result])->with('successMsg','Profile Successful updated !');
+        }
+
+}
+
+function editemp(Request $req)
+    {
+        if (request()->has('image')){
+            $imageuploaded = request()->file('image');
+            $imagename = time() . '.' . $imageuploaded->getClientOriginalExtension();
+            $imagepath = public_path('/');
+            $imageuploaded->move($imagepath,$imagename);
+        }
+        if($req->session()->has('result')){
+            $result=session('result.0.id');
+            $var = employer::find($result);
+            $var->company_name=$req->input('name');
+            $var->reg_no=$req->input('reg_no');
+            $var->company_address=$req->input('address');
+            $var->company_officenum=$req->input('officenum');
+            $var->company_faxnumber=$req->input('faxnum');
+            $var->company_email=$req->input('email');
+            $var->company_password=$req->input('password');
+            $var->company_confirmpass=$req->input('confirmpassword');
+            $var->company_size=$req->input('company');
+            $var->company_description=$req->input('description');
+            $var->company_logo = '/' . $imagename;
+            $var->update();
+            $result = employer::select('*')->where('id', '=', $result)->get();
+            $req->session()->put('result',$result);
+            return view('\Employer\showempprofile', ['result' => $result])->with('successMsg','Profile Successful updated !');
+        }
+}
+
+public function updatestdprofile($id)
+{
+    $result = student::select('*')->where('id', '=', $id)->get();
+    return view('\Admin\updatestdprofile', ['result' => $result]);
+}
+
+function stdupdate(Request $req)
+    {
+        if (request()->has('image') ){
+            $imageuploaded = request()->file('image');
+            $imagename = time() . '.' . $imageuploaded->getClientOriginalExtension();
+            $imagepath = public_path('/');
+            $imageuploaded->move($imagepath,$imagename);
+        }
+
+        if (request()->has('resume') ){
+            $resumeuploaded = request()->file('resume');
+            $resumename = time() . '.' . $resumeuploaded->getClientOriginalExtension();
+            $resumepath = public_path('/');
+            $resumeuploaded->move($resumepath,$resumename);
+        }
+            $var = student::find($req->id);
+            $var->std_name=$req->input('name');
+            $var->std_matric=$req->input('matric');
+            $var->std_address=$req->input('address');
+            $var->std_phonenum=$req->input('phonenum');
+            $var->std_email=$req->input('email');
+            $var->std_password=$req->input('password');
+            $var->std_confirmpassword=$req->input('confirmpassword');
+            $var->std_faculty=$req->input('faculty');
+            $var->std_description=$req->input('description');
+            $var->resume='/' . $resumename;
+            $var->std_pic = '/' . $imagename;
+            $var->update();
+            return redirect('searchstdprofile')->with('successMsg','Profile Successful updated !');
+
 }
 
 function viewcompanylist()
@@ -313,6 +474,119 @@ function displaystudentprofile($id)
     $result = student::select('*')->where('id', '=', $id)->get();
     return view('\Employer\displaystudentprofile', ['result' => $result]);
 }
+
+function rate(Request $req)
+    {
+        
+        $var = new studentratingscale;
+        if($req->session()->has('result')){
+            $result=session('result.0.id');
+            //$result = $req->session()->all();
+            //dd($result);
+            $var->id=$result; 
+            $var->muet=$req->muet;
+            $var->language=$req->language;
+            $var->language_detail=$req->language_detail;
+            $var->clubposition=$req->clubposition;
+            $var->position_detail=$req->position_detail;
+            $var->jobexperience=$req->jobexperience;
+            $var->experience_detail=$req->experience_detail;
+            $var->extracert=$req->extracert;
+            $var->cert_detail=$req->cert_detail;
+            $var->cgpa=$req->cgpa;
+            $var->save();
+            //$deta = DB::table('students')->join('studentratingscales', 'studentratingscales.id', '=', 'students.id')
+            //->select('students.standard','studentratingscales.muet','studentratingscales.language','studentratingscales.clubposition' ,'studentratingscales.jobexperience','studentratingscales.extracert','studentratingscales.cgpa','studentratingscales.muet_mark','studentratingscales.language_mark','studentratingscales.position_mark','studentratingscales.experience_mark','studentratingscales.cert_mark','studentratingscales.cgpa_mark')
+            //->where('studentratingscales.id', '=', $result)->get();
+
+            $mark = studentratingscale::find($result);
+
+            //muet mark
+            if($mark->muet >= 1 && $mark->muet <= 2){
+                $mark->muet_mark = '0';
+            }else if($mark->muet === 3){
+                $mark->muet_mark = '5';
+            }elseif($mark->muet >= 4 && $mark->muet <= 5){
+                $mark->muet_mark = '8';
+            }else{
+                $mark->muet_mark = '10';
+            }
+
+            //language
+            if($mark->language === 1){
+                $mark->language_mark = '0';
+            }else if($mark->language === 2){
+                $mark->language_mark = '5';
+            }elseif($mark->language >= 3 && $mark->language <= 4){
+                $mark->language_mark = '8';
+            }else{
+                $mark->language_mark = '10';
+            }
+
+            //position
+            if($mark->clubposition === 0){
+                $mark->position_mark = '0';
+            }else if($mark->clubposition === 1){
+                $mark->position_mark = '5';
+            }elseif($mark->clubposition === 2){
+                $mark->position_mark = '8';
+            }else{
+                $mark->position_mark = '10';
+            }
+
+              //Job Experience
+              if($mark->jobexperience === 0){
+                $mark->experience_mark = '0';
+            }else if($mark->jobexperience === 1){
+                $mark->experience_mark = '5';
+            }elseif($mark->jobexperience === 2){
+                $mark->experience_mark = '8';
+            }else{
+                $mark->experience_mark = '10';
+            }
+
+            //Self-development
+            if($mark->extracert === 0){
+                $mark->cert_mark = '0';
+            }else if($mark->extracert === 1){
+                $mark->cert_mark = '5';
+            }elseif($mark->extracert === 2){
+                $mark->cert_mark = '8';
+            }else{
+                $mark->cert_mark = '10';
+            }
+
+            //CGPA
+            if($mark->cgpa <2){
+                $mark->cgpa_mark = '0';
+            }else if($mark->cgpa >= 2 && $mark->cgpa < 3.33){
+                $mark->cgpa_mark = '5';
+            }elseif($mark->cgpa >= 3.33 && $mark->cgpa <= 3.67){
+                $mark->cgpa_mark = '8';
+            }else{
+                $mark->cgpa_mark = '10';
+            }
+
+            $mark->totalmark = ($mark->muet_mark *(30/100))+ ($mark->language_mark *(20/100)) + ($mark->position_mark*(15/100)) + ($mark->experience_mark*(15/100)) + ($mark->cert_mark *(10/100)) + ($mark->cgpa_mark*(10/100));
+            
+            $deta = student::find($result);
+
+             //total mark
+             if($mark->totalmark >= 0 && $mark->totalmark <= 3){
+                $deta->standard = 'D';
+            }else if($mark->totalmark >= 4 && $mark->totalmark <= 6){
+                $deta->standard = 'C';
+            }elseif($mark->totalmark >= 7 && $mark->totalmark <= 8){
+                $deta->standard = 'B';
+            }else{
+                $deta->standard = 'A';
+            }
+
+            $deta->update();
+            
+            return redirect('login')->with('successMsg','Rating Successful created !');
+            }
+        }
 
 }
 

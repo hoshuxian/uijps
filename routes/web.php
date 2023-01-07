@@ -30,12 +30,24 @@ Route::get('/signup', function () {
 });
 Route::post('/studentsignup', 'App\Http\Controllers\UserController@studentsignup');
 Route::post('/employersignup', 'App\Http\Controllers\UserController@employersignup');
+Route::get('/studentratingform', function () {
+    return view('studentratingform');
+});
+Route::post('/rate', 'App\Http\Controllers\UserController@rate');
 
 //Login
 Route::get('/login', function () {
     return view('/Login/login');
 });
-Route::get('/trylogin', 'App\Http\Controllers\UserController@login');
+Route::post('/trylogin', 'App\Http\Controllers\UserController@login');
+Route::get('/forgetpassword', function () {
+    return view('/Login/forgetpassword');
+});
+Route::post('/tryreset', 'App\Http\Controllers\UserController@tryreset');
+Route::get('/resetpassword', function () {
+    return view('/Login/resetpassword');
+});
+Route::post('/reset', 'App\Http\Controllers\UserController@reset');
 
 //Manage Admin
 Route::get('/createstdprofile', function () {
@@ -56,16 +68,34 @@ Route::get('/searchempprofile', 'App\Http\Controllers\UserController@viewemploye
 Route::get('/searchempprofile/search', 'App\Http\Controllers\UserController@employerlist');
 Route::get('/searchempprofile/{reg_no}', 'App\Http\Controllers\UserController@deleteemployerprofile');
 Route::get('/displaystdprofile/{id}', 'App\Http\Controllers\UserController@displaystdprofile');
+Route::get('/masterS/{id}', 'App\Http\Controllers\UserController@display');
 
 /*Route::get('/test', function () {
     return view('/Admin/test');
 });*/
 
 Route::get('/displayempprofile/{reg_no}', 'App\Http\Controllers\UserController@displayempprofile');
+Route::view('masterE', 'masterE');
 Route::get('/updateempprofile/{id}', 'App\Http\Controllers\UserController@updateempprofile');
 Route::post('/update', 'App\Http\Controllers\UserController@update');
+Route::get('/editempprofile/{id}', 'App\Http\Controllers\UserController@editempprofile');
+Route::post('/editemp', 'App\Http\Controllers\UserController@editemp');
 
-Route::get('/showstdprofile/{id}', 'App\Http\Controllers\UserController@showstdprofile');
+
+Route::get('/showstdprofile', function () {
+    return view('/Student/showstdprofile');
+});
+Route::get('/showstdprofile/{id}', 'App\Http\Controllers\Usercontroller@showstdprofile');
+Route::get('/updatestdprofile/{id}', 'App\Http\Controllers\UserController@updatestdprofile');
+Route::post('/stdupdate', 'App\Http\Controllers\UserController@stdupdate');
+
+Route::get('/showempprofile', function () {
+    return view('/Employer/showempprofile');
+});
+
+Route::get('/showempprofile', 'App\Http\Controllers\UserController@showempprofile');
+Route::get('/editprofile/{id}', 'App\Http\Controllers\UserController@editprofile');
+Route::post('/edit', 'App\Http\Controllers\UserController@edit');
 
 //Manage Feedback
 Route::get('/feedback', function () {
@@ -97,19 +127,35 @@ Route::get('/searchfeedback', 'App\Http\Controllers\FeedbackController@viewfeedb
 Route::get('/searchfeedback/search', 'App\Http\Controllers\FeedbackController@feedbacklist');
 
 //Manage Event
-Route::get('/createevent', function () {
-    return view('/Admin/createevent');
-});
 Route::post('/createevent', 'App\Http\Controllers\EventController@createevent');
 Route::get('/searchevent', 'App\Http\Controllers\EventController@vieweventlist');
 Route::get('/searchevent/search', 'App\Http\Controllers\EventController@eventlist');
-Route::get('/displayevent/{event_name}', 'App\Http\Controllers\EventController@displayevent');
+Route::get('/displayevent/{id}', 'App\Http\Controllers\EventController@displayevent');
 
-Route::get('/updateevent/{event_name}', 'App\Http\Controllers\EventController@updateevent');
-Route::put('/updateevent/{event_name}', 'App\Http\Controllers\EventController@update2');
+Route::get('/updateevent/{id}', 'App\Http\Controllers\EventController@updateevent');
+Route::post('/eventupdate', 'App\Http\Controllers\EventController@eventupdate');
 
 //Manage Internship Job Post
 Route::get('/createjobpost', function () {
     return view('/Employer/createjobpost');
 });
-Route::post('/createjobpost', 'App\Http\Controllers\PostController@createjob');
+Route::post('/createjob', 'App\Http\Controllers\PostController@createjob');
+Route::get('/searchpost', 'App\Http\Controllers\PostController@viewpostlist');
+Route::get('/searchpost/search', 'App\Http\Controllers\PostController@postlist');
+Route::get('/displaypost/{post_id}', 'App\Http\Controllers\PostController@displaypost');
+Route::get('/displaypost/{post_id}/delete', 'App\Http\Controllers\PostController@deletepost');
+Route::get('/updatepost/{id}', 'App\Http\Controllers\PostController@updatepost');
+Route::post('/postupdate/{post_id}', 'App\Http\Controllers\PostController@postupdate');
+Route::get('/searchallpost', 'App\Http\Controllers\PostController@viewallpostlist');
+Route::get('/searchallpost/search', 'App\Http\Controllers\PostController@allpostlist');
+Route::get('/displayallpost/{post_id}', 'App\Http\Controllers\PostController@displayallpost');
+
+Route::get('/searchjob', 'App\Http\Controllers\PostController@viewjoblist');
+Route::post('/apply/{post_id}', 'App\Http\Controllers\PostController@apply');
+Route::get('/searchjob/search', 'App\Http\Controllers\PostController@joblist');
+Route::get('/displayjob/{post_id}', 'App\Http\Controllers\PostController@displayjob');
+
+Route::get('/displaystudentapply/{post_id}', 'App\Http\Controllers\PostController@displaystudentapply');
+Route::get('/display/{post_id}/{id}', 'App\Http\Controllers\POstController@display');
+Route::get('/displaystudentapply/{post_id}/search', 'App\Http\Controllers\PostController@searchapply');
+Route::post('/hired/{post_id}/{id}', 'App\Http\Controllers\PostController@hired');

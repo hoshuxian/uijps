@@ -3,6 +3,8 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\View;
+
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -21,8 +23,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
+    /*public function boot()
     {
-        //
-    }
+        View::composer(
+            ['\Employer\showempprofile','\masterE','\Employer\createjobpost','\Employer\displaystudentprofile','\Employer\editempprofile','\Employer\empfeedback','\Employer\searchpost','\Employer\searchstudent'],
+            callback:'App\Http\View\Composers\EmployerComposer'
+        );
+    }*/
 }

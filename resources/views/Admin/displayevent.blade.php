@@ -65,7 +65,7 @@ button:hover{
 </style>
 <div class="box">
 @foreach($result as $detaa)
-            <form action="/updateevent/{{ $detaa->event_id}}" method='get'>
+            <form action="/updateevent/{{ $detaa->id}}" method='get'>
             @csrf
             <table>
             <tr>

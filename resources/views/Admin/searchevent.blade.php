@@ -194,7 +194,7 @@
 <div class="eventlist">
 @foreach($deta as $detaa)
 <div class="name">
-<a href="/displayevent/{{ $detaa->event_id}}">{{$detaa->event_name}}</button></a>
+<a href="/displayevent/{{ $detaa->id}}">{{$detaa->event_name}}</button></a>
 </div>
   <br>
   <div class="description">

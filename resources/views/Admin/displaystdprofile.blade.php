@@ -128,6 +128,26 @@ button:hover{
   border: 3px solid white;
 }
 
+.button{
+  height: 60px;
+  margin-left: 3%;
+  margin-bottom: 15px;
+  width: 120px;
+  background: white;
+  border: 3px solid #F3C301;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 35px;
+  letter-spacing: 1px;
+  padding: 10px;
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.button:hover{
+  background: #F3C301;
+  border: 3px solid white;
+}
 </style>
 
 <div class="box">
@@ -135,7 +155,7 @@ button:hover{
 <img class="background_img"src="/stdbackground.jpg">
 <div class="myprofile">
 @foreach($result as $detaa)
-<form action="/searchstdprofile" method='get'>
+<form action="/updatestdprofile/{{ $detaa->id}} " method='get'>
 
 @if($detaa->std_pic)
     <img class="std_pic" src="{{$detaa->std_pic}}" name="image">
@@ -185,7 +205,8 @@ button:hover{
 </div>
 
 <br><br>
-<button  onclick="location.href='{{ url('#') }}'" type="submit" style="margin-left:70%;">EDIT</button> <button  onclick="location.href='{{ url('/searchstdprofile') }}'" type="submit">BACK</button>
+<button type="submit" value="edit" style="margin-left:70%;">EDIT</button>
+<a href='/searchstdprofile' type="submit"value="Back" class="button">BACK</a>
 <br><br>
 </form>
 </html>

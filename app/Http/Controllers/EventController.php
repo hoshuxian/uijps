@@ -11,6 +11,7 @@ use Image;
 class EventController extends Controller
 {
     //
+
     function createevent(Request $req)
     {
         if (request()->has('image') ){
@@ -53,21 +54,21 @@ public function eventlist(request $request)
     
 }
 
-function displayevent($event_id)
+function displayevent($id)
 
 {
-    $result = event::select('*')->where('event_id', '=', $event_id)->get();
+    $result = event::select('*')->where('id', '=', $id)->get();
     return view('\Admin\displayevent', ['result' => $result]);
 }
 
-function updateevent($event_id)
+function updateevent($id)
 
 {
-    $result = event::select('*')->where('event_id', '=', $event_id)->get();
+    $result = event::select('*')->where('id', '=', $id)->get();
     return view('\Admin\updateevent', ['result' => $result]);
 }
 
-function update(Request $req,$event_id)
+function eventupdate(Request $req)
 {
     if (request()->has('image') ){
         $imageuploaded = request()->file('image');
@@ -77,7 +78,7 @@ function update(Request $req,$event_id)
     }
 
         //Image::make($image)->resize(300,300)->save(public_path('/uploads/student/'.$filename));*/
-        $var = event::find($event_id);
+        $var = event::find($req->id);
         $var->event_name=$req->input('name');
         $var->event_description1=$req->input('description1');
         $var->event_description2=$req->input('description2');
@@ -88,6 +89,6 @@ function update(Request $req,$event_id)
         $var->event_link=$req->input('link');
         $var->event_pic = '/' . $imagename;
         $var->update();
-        return redirect('/displayevent/{event_name}')->with('successMsg','Event Successful created !');
+        return redirect('searchevent')->with('successMsg','Event Successful updated !');
         }
 }

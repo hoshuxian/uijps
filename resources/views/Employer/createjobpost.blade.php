@@ -14,7 +14,7 @@
   margin-bottom: 10%;
   object-fit: cover;
   text-align:left;
-  margin-left: 20%;
+  margin-left: 15%;
 }
 
 /*table .input-box{
@@ -70,7 +70,7 @@ form th{
 
 
 form textarea{
-  height: 60px;
+  height: 100px;
   width: 200%;
   outline: none;
   border-radius: 5px;
@@ -147,10 +147,28 @@ form img{
     color: #cc0000;
 }
 
+#background{
+width:100%;
+height:100%;
+}
+
+#image{
+width:20%;
+height:20%;
+}
 </style>
 
 <div class="container2">
-<form action='#' method='post'enctype="multipart/form-data">
+@foreach(Session::get('result') as $detaa)
+<input type="hidden" class="text" placeholder="Comapny's ID" value="{{ $detaa->id}}"name="id" >
+    <img class="background_img" src="/nobackground.jfif" id="background"/>
+@if($detaa->company_logo)
+        <img src="{{$detaa->company_logo}}" name="image" class="emp_pic" id="image"><h2 style="padding-left:23%;margin-top:-9%;" class="name">{{$detaa->company_name}}<br><br></h2>
+@else
+    <img class="emp_pic" src="/nologo.png" name="image"id="image"/>
+@endif
+<br>
+<form action='createjob' method='post'enctype="multipart/form-data">
 @csrf
     <table>
 
@@ -167,6 +185,11 @@ form img{
 <tr>
 <th>Address:</th>
 <th><input type="text" class="text" placeholder="Company's Address" name="job_address" required></input></th>
+</tr>
+
+<tr>
+<th>Position Available:</th>
+<th><input type="text" class="text" placeholder="Number of position available" name="position_available" required></input></th>
 </tr>
 
 <tr>
@@ -226,12 +249,13 @@ form img{
 
 </table>
 <button type="submit" class="button" value="create" style="margin-left:65%;"> CREATE</button>
-<button onclick="location.href='{{ url('/#') }}'" type="submit" class="button" value="Back">CANCEL</button>
+<button onclick="location.href='{{ url('/searchpost') }}'" class="button" value="Back">CANCEL</button>
 @if(session()->has('successMsg'))
 <div class="alert alert-success">
      {{ session()->get('successMsg') }}
 </div>
 @endif
+@endforeach
   </form>
 </div>
 

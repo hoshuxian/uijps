@@ -129,14 +129,16 @@ form th{
 </style>
 
 <div class="container2">
-<form action='#' method='post'enctype="multipart/form-data">
+<form action='/eventupdate' method='post'enctype="multipart/form-data">
 @foreach($result as $detaa)
 @csrf
+<input type="hidden" class="text" placeholder="Event's ID" value="{{ $detaa->id}}" name="id" id="id" >
+
     <table>
     <tr>
     @if($detaa->event_pic)
     <td rowspan="15" style="width:10px;"><img src="{{$detaa->event_pic}}" style="width:300px;height:300px;float:left;margin-left: -10%;" name ="image">
-    <input type ="file" name="image" style="margin-top: 5%;font-size: 15px;"></td>
+    <input type ="file" name="image" style="margin-top: 5%;font-size: 15px;" value="{{$detaa->event_pic}}" id="image"></td>
         @else
         <td rowspan="15" style="width:10px;"><img src="/picdefault.png"style="width:300px;height:300px;float:left;margin-left: -10%;" name ="image">
     <input type ="file" name="image" style="margin-top: 5%;font-size: 15px;"></td>
@@ -149,17 +151,17 @@ form th{
 
 <tr> 
 <th>Event Name:</th>
-<th>{{$detaa->event_name}}</th>
+<th><input type="text" class="text" placeholder="Event's Name" name="name" value="{{$detaa->event_name}}" id="name" required></th>
 </tr>
 
 <tr>
 <th>Event Description 1:</th>
-<th><textarea type="text" class="text"placeholder ="Event's Description 1"  name="description1" required>{{$detaa->event_description1}}</textarea></th>
+<th><input type="text" class="text"placeholder ="Event's Description 1"  name="description1" value="{{$detaa->event_description1}}" id="description1" required></input></th>
 </tr>
 
 <tr>
 <th>Event Description 2:</th>
-<th><textarea type="text" class="text" placeholder="Event's Description 2" name="description2" required>{{$detaa->event_description2}}</textarea></th>
+<th><input type="text" class="text" placeholder="Event's Description 2" name="description2" value="{{$detaa->event_description2}}" id="description2" required></input></th>
 </tr>
 
 <tr>
@@ -172,39 +174,40 @@ form th{
 
 <tr>
 <th>Event Time</span></th>
-<th><input type="text" class="text" placeholder="Time" name="time" value="{{$detaa->event_time}}" required></th>
+<th><input type="text" class="text" placeholder="Time" name="time" value="{{$detaa->event_time}}" id="time"required></th>
 </tr>
 
 <tr>
 <th>Event Date:</th>
-<th><input type="text" class="text" placeholder="Date" name="date" value="{{$detaa->event_date}}" required></th>
+<th><input type="text" class="text" placeholder="Date" name="date" value="{{$detaa->event_date}}" id="date" required></th>
 </tr>
 
 <tr>
 <th>Speaker:</th>
-<th><input type="text" class="text" placeholder="Speaker" name="speaker" value="{{$detaa->event_speaker}}" required></th>
+<th><input type="text" class="text" placeholder="Speaker" name="speaker" value="{{$detaa->event_speaker}}" id="speaker" required></th>
 </tr>
 
 <tr>
 <th>Venue:</th>
-<th><input type="text" class="text" placeholder="Venue" name="address" value="{{$detaa->event_address}}" required></th>
+<th><input type="text" class="text" placeholder="Venue" name="address" value="{{$detaa->event_address}}" id="address" required></th>
 </tr>
 
 <tr>
 <th>Link:</th>
-<th><input type="text" class="text" placeholder="Link" name="link" value="{{$detaa->event_link}}"></th>
+<th><input type="text" class="text" placeholder="Link" name="link" value="{{$detaa->event_link}}" id="link"></th>
 </tr>
 
 </table>
-<button type="submit" class="button" value="uodate" style="margin-left:65%;"> UPDATE</button>
-<button onclick="location.href='{{ url('/displayevent') }}'" type="submit" class="button" value="Back">CANCEL</button>
 @if(session()->has('successMsg'))
-<div class="alert alert-success">
-     {{ session()->get('successMsg') }}
-</div>
+    <div class="alert alert-success">
+        {{ session()->get('successMsg') }}
+    </div>
 @endif
+
+    <button type="submit" class="button" value="update" style="margin-left:65%;"> UPDATE</button>
+    <a href='/displayevent/{{$detaa->event_name}}' type="button "value="Back" class="button" style="padding: 0.5rem 1.5rem;">BACK</a>
+    @endforeach
   </form>
-  @endforeach
 </div>
 
 </html>

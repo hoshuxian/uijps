@@ -5,19 +5,27 @@
 <!DOCTYPE html>
     <html>
         <style>
-table {
-    margin-left: 15%;
-    width:75%;
-    border-collapse:collapse;
-    font-family:Arial;
-    padding-bottom:20px;
-    margin-top: 12px;
+
+.container4{
+	width: 300px;
+	height:270px;
+	border: 2px solid black;
+	background-color:  #094b65;
+	border-radius: 10%;
+	margin-left: 18%;
+	margin-top: 50px;
+	display: inline-block;
 }
 
-table th,td{
-  border: 2px solid #094b65;
-  height:25px;
-  text-align:center;
+.container3{
+	width: fit-content;
+	height:270px;
+	border: 2px solid black;
+	background-color:  white;
+	border-radius: 10%;
+	margin-left: 9%;
+	margin-top: 30px;
+	box-shadow: rgba(57, 57, 56, 0.8) -5px 5px;
 }
 
 .search2 {
@@ -49,7 +57,7 @@ table th,td{
 }
 
 .input-group{
-    margin-left:20%;
+    margin-left:15%;
 }
 
 .items-controller{
@@ -145,6 +153,19 @@ table th,td{
     padding-left: 10px;
     color: #cc0000;
 }
+
+.name{
+	margin-top:10%;
+	margin-left: 10%;
+	font-size: 30px;
+	font-weight: bold;
+}
+
+.detail{
+	margin-top: 10%;
+	margin-left: 10%;
+	font-size: 21px;
+}
 </style>
 <div class="items-controller">
                 <h4>Show</h4>
@@ -158,11 +179,11 @@ table th,td{
                 <h4>Per Page</h4>
             </div>
 <div class=search2>
-    <form action="/searchstudent/search" method="GET" role="search">
+    <form action="/searchpost/search" method="GET" role="search">
         <div class="input-group">
             <button class="searchbtn" type="submit" title="Search projects"><ion-icon name="search-outline"></ion-icon></button>
             <input type="text" class="form-control mr-2" name="deta" placeholder="Search......" id="deta">
-            <a href="/searchstudent">&emsp;<button  class="refreshbtn" type="button" title="Refresh page"><ion-icon name="repeat-outline"></ion-icon></button></a>
+            <a href="/searchpost">&emsp;<button  class="refreshbtn" type="button" title="Refresh page"><ion-icon name="repeat-outline"></ion-icon></button></a>
         </div>
                     @if(!empty($successMsg))
                         <div class="alert alert-success" role="alert"> {{ $successMsg }}</div>
@@ -175,19 +196,26 @@ table th,td{
                     
 </div>
 </form>
-<div class="joblist">
-@foreach($deta as $detaa)
-<div class="name">
-<a href="/displayevent/{{ $detaa->event_id}}">{{$detaa->event_name}}</button></a>
-</div>
-  <br>
-  <div class="description">
-  {{$detaa->event_description1}}
-  </div>
-    <hr>
-  @endforeach 
-</div>
 
+@foreach($deta as $detaa)
+<div class="container4">
+<a href="/displaypost/{{ $detaa->post_id}}"><div class="container3">
+	<div class="name">
+	{{$detaa->job_title}}
+	</div>
+	<div class="detail">
+	{{$detaa->job_venue}}
+	<br>
+  {{$detaa->job_benefit}}
+  <br>
+  {{$detaa->job_salary}}
+  <br>
+  <p style="color:red;">{{$detaa->job_applynumber}}<span style="font-size:10px;color:black;margin-left:10px;">applicants</span></p>
+	
+	</div>
+</div></a>
+</div>
+@endforeach 
       <section class="field">
             <div class="bottom-field">
                 <ul class="pagination">

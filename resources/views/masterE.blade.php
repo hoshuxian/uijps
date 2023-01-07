@@ -542,7 +542,6 @@ margin-left: 20px;
 color: #1DC4E7;
 }
 </style>
-
 <body>
 <header>
 <div class="left">
@@ -554,10 +553,15 @@ color: #1DC4E7;
     <!--<div class="logo">
         <img src = " {{ URL('/umplogo.png') }} " alt="ump" width="200" height="100"> 
     </div>-->
+    @foreach(Session::get('result') as $result)
+
     <div class="pic">
-        <img src ="profilepic.jpg" class="profile_image" alt="">
+    <img class="company_logo" src="{{$result->company_logo}}" name="image">
     </div>
-    <h2>username</h2>
+    <h2>{{$result->company_name}}</h2>
+    
+    @endforeach
+    
     <ul>
         
         <li class="list active">

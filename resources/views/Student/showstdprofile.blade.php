@@ -11,7 +11,7 @@
     margin-bottom: 3%;
     text-align: center;
     object-fit: cover;
-    margin-top: -24%;
+    margin-top: -6%;
     border-radius: 20px;
     object-fit: cover;
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
@@ -139,19 +139,20 @@ button:hover{
 <div class="background">
 <img class="background_img"src="/stdbackground.jpg">
 <div class="myprofile">
-@foreach($result as $detaa)
-<form action="#" method='get'>
 
+@foreach(Session::get('result') as $detaa)
+<form action="/editprofile/{{ $detaa->id}}" method='get'>
+    
+@csrf
 @if($detaa->std_pic)
-    <img class="std_pic" src="{{$detaa->std_pic}}" name="image">
+    <img class="std_pic" src="{{$detaa->std_pic}}" name="image" id="image">
 @else
-    <img class="std_pic" src="/default.jpg" name="image"/>
+    <img class="std_pic" src="/default.jpg" name="image"id="image"/>
 @endif
 
 <h2 class="profile"> MY PROFILE</h2>
         <div class="design1">
             <div class="design2">
-            @csrf
     <table>
 <tr>
 <th>{{$detaa->std_name}}<br><br></th>
@@ -190,7 +191,7 @@ button:hover{
 </div>
 
 <br><br>
-<button  onclick="location.href='{{ url('#') }}'" type="submit" style="margin-left:70%;">EDIT</button>
+<button type="submit" value="edit" style="margin-left:70%;">EDIT</button>
 <br><br>
 </form>
 </html>

@@ -4,68 +4,6 @@
 <!DOCTYPE html>
     <html>
         <style>
-			.choose{
-    border: 6px solid #094b65;
-    width: 400px;
-    height: 200px;
-    margin-left: 35%;
-    margin-bottom: 10%;
-    text-align: center;
-    object-fit: cover;
-    margin-top: -24%;
-    border-radius: 20px;
-    backdrop-filter: blur(10px);
-}
-
-.student{
-    height: 45px;
-  margin-left: 3%;
-  margin-bottom: 15px;
-  width: 120px;
-  background: white;
-  border: 3px solid #094b65;
-  font-size: 18px;
-  font-weight: 500;
-  border-radius: 10px;
-}
-
-.employer{
-    height: 45px;
-  margin-left: 3%;
-  margin-bottom: 15px;
-  width: 120px;
-  background: #094b65;
-  border: 3px solid #094b65;
-  font-size: 18px;
-  font-weight: 500;
-  border-radius: 10px;
-  color: white;
-}
-
-
-img{
-    margin-top: 10px;
-  margin-left: -45%;
-  margin-bottom: 15px;
-}
-
-.choose2{
-    border: 2px solid black;
-    transform: rotate(90deg);
-    width: 15%;
-    object-fit: cover;
-    margin-top: -15%;
-    margin-left: 40%;
-    margin-bottom: 15%;
-    height: 0.5px;
-}
-
-.title{
-    object-fit: cover;
-    margin-top: -20%;
-    margin-left: 40%;
-    margin-bottom: 15%;
-}
 table th,td{
   height:25px;
   text-align:center;
@@ -115,7 +53,7 @@ table {
 	align-items: center;
     margin-left: 15%;
     margin-bottom: 3%;
-    margin-top: -6%;
+    margin-top: -20%;
 
 }
 
@@ -209,20 +147,27 @@ table {
     color: #cc0000;
 }
 
-</style>
-<div class="choose">
-    <img src="/logo.png"/>
-    <div class="choose2">
-        <hr>
-    </div>
-    <div class="title">
-        <p>UMP Internship Job</p>
-        <p>Portal System</p>
-    </div>
-    <button onclick="location.href='{{ url('/stdsearchfeedback') }}'"type="submit" class="student" value="student"> STUDENT</button>
-    <button type="submit" class="employer" value="employer">EMPLOYER</button>
-</div>
+.button{
+  height: 45px;
+  margin-top: 15px;
+  margin-left: 80%;
+  margin-bottom: 15px;
+  width: 120px;
+  background: white;
+  border: 3px solid #F3C301;
+  font-size: 18px;
+  font-weight: 500;
+  border-radius: 35px;
+  letter-spacing: 1px;
+}
 
+.button:hover{
+  background: #F3C301;
+  border: 3px solid white;
+}
+
+
+</style>
 <div class="items-controller">
                 <h4>Show</h4>
                 <select name="" id="itemperpage">
@@ -235,11 +180,11 @@ table {
                 <h4>Per Page</h4>
             </div>
 <div class=search2>
-    <form action="/searchfeedback/search" method="GET" role="search">
+    <form action="/searchblacklist/search" method="GET" role="search">
         <div class="input-group">
             <button class="searchbtn" type="submit" title="Search projects"><ion-icon name="search-outline"></ion-icon></button>
             <input type="text" class="form-control mr-2" name="deta" placeholder="Search......" id="deta">
-            <a href="/searchfeedback">&emsp;<button  class="refreshbtn" type="button" title="Refresh page"><ion-icon name="repeat-outline"></ion-icon></button></a>
+            <a href="/searchblacklist">&emsp;<button  class="refreshbtn" type="button" title="Refresh page"><ion-icon name="repeat-outline"></ion-icon></button></a>
         </div>
                     @if(!empty($successMsg))
                         <div class="alert alert-success"> {{ $successMsg }}</div>
@@ -255,21 +200,17 @@ table {
 <table>
   <thead>
 <tr>
-	<th>Rate</th>
-	<th>Comment</th>
 	<th>Company Name</th>
-	<th>Student Name</th>
-	<th>Position</th>
+	<th>Company Address</th>
+	<th>Action</th>
   </tr>
 </thead>
 <tbody>
 @foreach($deta as $detaa)
   <tr>
-  <td>{{$detaa->rate}}</td>
-	<td >{{$detaa->comment}}</td>
-	<td>{{$detaa->company_name}}</td>
-	<td >{{$detaa->std_name}}</td>
-	<td>{{$detaa->position}}</td>
+  <td>{{$detaa->companyname}}</td>
+	<td >{{$detaa->companyaddress}}</td>
+    <td><a href="/updateblacklist/{{ $detaa->id}}"><button type="button" style="background-color: white; border: 1px solid white;" > <ion-icon name="eye-outline"></ion-icon></button></a>&emsp;<a href="/searchblacklist/{{ $detaa->id}}"><button type="button" style="background-color: white; border: 1px solid white;" onclick="return confirm('Are you sure?This record and it`s details will be permanantly deleted!')"><ion-icon name="trash-outline"></ion-icon></button></a></td>
  </tr>
   @endforeach
   
@@ -284,6 +225,7 @@ table {
                 </ul>
             </div>
         </section>
+        <button onclick="location.href='{{ url('/blacklist') }}'" class="button" value="create">CREATE</button>
 <br><br>
 </div>
 

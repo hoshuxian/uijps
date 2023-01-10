@@ -618,7 +618,7 @@ color: #1DC4E7;
         </li>
         @csrf
         <li class="list">
-            <a href="/logout" style="--clr:#fe98bf;">
+            <a href="{{ url('/logout') }}" style="--clr:#fe98bf;">
                 <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                 <span class="text">Logout</span>
             </a>

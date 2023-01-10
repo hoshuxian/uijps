@@ -168,11 +168,16 @@ height:20%;
 @else
     <img class="emp_pic" src="/nologo.png" name="image"id="image"/>
 @endif
+
+@if(!empty($disable))
+<p style="color: red;font-size:60px;margin-left:80%;margin-top: -10%;transform: translateY(0) rotate(-30deg);"> DISABLE</p>
+@endif
+
 <br>
 <form action='/apply/{{$detaa->post_id}}' method='POST'enctype="multipart/form-data">
 @csrf
 <p style="color:red;font-size: 30px;float:right;margin-top:-9%;">{{$detaa->job_salary}}</p>
-<a href="/displaystudentapply/{{ $detaa->post_id}}"> <p style="color:red;font-size: 24px;float:right;;margin-top:-5%;">{{$detaa->job_applynumber}}<span style="font-size:15px;color:black;margin-left:10px;">applicants</span></p></a>
+<p style="color:red;font-size: 24px;float:right;;margin-top:-5%;">{{$detaa->job_applynumber}}<span style="font-size:15px;color:black;margin-left:10px;">applicants</span></p>
 <p style="color:red;font-size: 24px;margin-right:10px;float:right;margin-top:-1%;">{{$detaa->hired}}<span style="font-size:15px;color:black;margin-left:10px;">hired / {{$detaa->position_available}}</span></p>
 <p style="margin-left: 23%;font-size: 18px;">{{$detaa->job_title}}</p>
 <p style="margin-left: 23%;font-size: 18px;">{{$detaa->job_venue}}</p>

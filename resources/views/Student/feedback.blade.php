@@ -11,7 +11,6 @@
     margin-bottom: 10%;
     text-align: center;
     object-fit: cover;
-    margin-top: -6%;
     border-radius: 20px;
     box-shadow: 0 15px 30px rgba(0,0,0,0.1);
     backdrop-filter: blur(10px);
@@ -210,9 +209,33 @@ form .button:hover{
     cursor: pointer;
     box-shadow: 0 5px 5px rgba(0,0,0,0.2);
  }
+
+ textarea,
+span.prefix {
+  font-size: 1em;
+  font-weight: normal;
+  padding: 15px;
+  border-width: 1px;
+  margin-left: 3%;
+  padding-top: 30px;
+}
+
+span.prefix {
+  position: absolute;
+}
+
 </style>
 
 <form action="/submitfeedback" method="post" enctype="multipart/form-data">
+<p style="color:black;margin-top: -5%;margin-left: 20%;font-size: 24px;">Company: &emsp;
+<select style="width: 60%;height: 30px;" id="companyname" name="companyname" required>
+@foreach($deta as $detaa)
+<option value="Select">Select Company name</option>
+<option value="{{$detaa->company_name}}">{{ $detaa->company_name }}</option>
+ @endforeach
+    </select>
+</p>
+<br><br>
 @csrf
 <div class="design1">
     <div class="p3">
@@ -237,7 +260,7 @@ form .button:hover{
             <div class="p2">
                 <p style="font-weight: thin;">We'll use your feedback to improve our system</p>   
             </div>
-            <textarea class="text" name="comment" cols="90" rows="3"id="comment" type="text" placeholder="Add a comment..." ></textarea>
+            <textarea class="text" name="comment" cols="90" rows="3"id="comment" type="text" placeholder="Add a comment..." data-prefix="Student comments on company:"></textarea>
         </div>
     </div>
 </div>
@@ -249,6 +272,8 @@ form .button:hover{
     <button type="submit" onclick="closepopup()">OK</button>
 </div>
         </form>
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
       <script>
 const popup = document.getElementById("popup");
         function openpopup(){
@@ -259,6 +284,20 @@ const popup = document.getElementById("popup");
         function closepopup(){
             popup.classList.remove("open-popup");
         }
+
+        $('textarea.text').each(function() {
+  var prefix = $('<span/>')
+    .text($(this).data('prefix'))
+    .addClass('prefix')
+    .appendTo('body')
+    .css({
+      left: $(this).position().left + 'px',
+      top: $(this).position().top + 'px',
+    });
+  $(this).css({
+    textIndent: prefix.outerWidth() + 'px'
+  });
+});
       </script>  
 </html>
 

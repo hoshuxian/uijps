@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Student;
 use App\Models\Employer;
+use App\Models\blacklist;
 use App\Models\studentratingscale;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\Auth;
@@ -101,6 +102,13 @@ class UserController extends Controller
         }
     }
 
+    function logout(Request $request)
+    {
+        request()->session()->regenerate(true);
+        request()->session()->flush();
+        return redirect('/login');
+    }
+
     function tryreset(Request $req)
     {
         $result = $req->input('email'); 
@@ -120,7 +128,7 @@ class UserController extends Controller
             return view('\Login\login')->with('successMsg','Reset password successful!');
         }
 
-}
+    }
 
     //Manage Student
     //Create New Student Profile
@@ -439,17 +447,6 @@ function displaycompanyprofile($reg_no)
     return view('\Student\displaycompanyprofile', ['result' => $result]);
 }
 
-function destroy(Request $request)
-{
-    Auth::guard('web')->logout();
-
-    $request->session()->invalidate();
-
-    $request->session()->regenerateToken();
-
-    return redirect('/');
-}
-
 function viewstdlist()
 {
     $deta = Student::all();
@@ -587,6 +584,57 @@ function rate(Request $req)
             return redirect('login')->with('successMsg','Rating Successful created !');
             }
         }
+//Blacklist
+//display company blacklist
+function viewblacklist()
+{
+    $deta = blacklist::all();
+    return view('\Admin\searchblacklist',['deta'=>$deta]);
+}
+
+//search company blacklist
+public function blacklist(request $request)
+{ 
+    $deta = $request->input('deta'); 
+    $deta = blacklist::select('companyname','companyaddress')->where('companyname','LIKE', '%' . $deta . '%')->orwhere('companyaddress','LIKE', '%' . $deta . '%')->get();
+    if (count ( $deta ) > 0)
+    return view('\Admin\searchblacklist', ['deta' => $deta])->with('successMsg','Results Found !');
+    else
+    return view ('\Admin\searchblacklist', ['deta' => $deta])->with('FailedMsg','No Details found. Try to search again !' );		
+    
+}
+
+public function deleteblacklist($id)
+{
+    $result = blacklist::select('*')->where('id', '=', $id)->delete();
+    return redirect('searchblacklist')->with('successMsg','Profile Successful deleted !');
+}
+
+function createblacklist(Request $req)
+    {
+            $var = new blacklist;
+            $var->companyname=$req->name;
+            $var->companyaddress=$req->address;
+            $var->save();
+            return redirect('searchblacklist')->with('successMsg','Profile Successful created !');
+
+}
+
+public function updateblacklist($id)
+{
+    $result = blacklist::select('*')->where('id', '=', $id)->get();
+    return view('\Admin\updateblacklist', ['result' => $result]);
+}
+
+function blacklistupdate(Request $req)
+    {
+            $var = blacklist::find($req->id);
+            $var->companyname=$req->input('name');
+            $var->companyaddress=$req->input('address');
+            $var->update();
+            return redirect('searchblacklist')->with('successMsg','Profile Successful updated !');
+
+}
 
 }
 

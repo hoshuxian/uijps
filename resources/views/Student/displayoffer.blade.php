@@ -1,4 +1,4 @@
-@extends ('masterE')
+@extends ('masterS')
 @section('content')
 
 
@@ -160,7 +160,12 @@ height:20%;
 </style>
 
 <div class="container2">
-@foreach(Session::get('result') as $detaa)
+@if(session()->has('successMsg'))
+<div class="alert alert-success">
+     {{ session()->get('successMsg') }}
+</div>
+@endif
+@foreach($deta as $detaa)
 <input type="hidden" class="text" placeholder="Company's ID" value="{{ $detaa->id}}"name="id" >
     <img class="background_img" src="/nobackground.jfif" id="background"/>
 @if($detaa->company_logo)
@@ -168,15 +173,18 @@ height:20%;
 @else
     <img class="emp_pic" src="/nologo.png" name="image"id="image"/>
 @endif
-@endforeach
+
+@if(!empty($disable))
+<p style="color: red;font-size:60px;margin-left:80%;margin-top: -10%;transform: translateY(0) rotate(-30deg);"> DISABLE</p>
+@endif
+
 <br>
-@foreach($deta as $detaa)
-<form action='/updatepost/{{ $detaa->post_id}}' method='get'enctype="multipart/form-data">
+<form action='/accept/{{$detaa->post_id}}' method='POST'enctype="multipart/form-data">
 @csrf
 <p style="color:red;font-size: 30px;float:right;margin-top:-9%;">{{$detaa->job_salary}}</p>
-<a href="/displaystudentapply/{{ $detaa->post_id}}"> <p style="color:red;font-size: 24px;float:right;;margin-top:-5%;">{{$detaa->job_applynumber}}<span style="font-size:15px;color:black;margin-left:10px;">applicants</span></p></a>
-<a href="/displayhiredlist/{{ $detaa->post_id}}"><p style="color:red;font-size: 24px;margin-right:10px;float:right;margin-top:-1%;">{{$detaa->hired}}<span style="font-size:15px;color:black;margin-left:10px;">hired / {{$detaa->position_available}}</span></p></a>
-<p style="margin-left: 23%;font-size: 18px;margin-top: -3%;">{{$detaa->job_title}}</p>
+<p style="color:red;font-size: 24px;float:right;;margin-top:-5%;">{{$detaa->job_applynumber}}<span style="font-size:15px;color:black;margin-left:10px;">applicants</span></p>
+<p style="color:red;font-size: 24px;margin-right:10px;float:right;margin-top:-1%;">{{$detaa->hired}}<span style="font-size:15px;color:black;margin-left:10px;">hired / {{$detaa->position_available}}</span></p>
+<p style="margin-left: 23%;font-size: 18px;">{{$detaa->job_title}}</p>
 <p style="margin-left: 23%;font-size: 18px;">{{$detaa->job_venue}}</p>
 <hr><br>
 <h2>Job Description:</h2><br>
@@ -186,8 +194,7 @@ height:20%;
 <h2>Job Specialization:</h2><br>
 <p>{{$detaa->job_category}}</p><br>
 <hr><br>
-@endforeach
-@foreach(Session::get('result') as $detaa)
+
 <h2>Company Overview</h2><br>
 <p>{{$detaa->company_description}}</p><br>
 <h2>Additional Company Information</h2><br>
@@ -197,9 +204,9 @@ height:20%;
 @foreach($deta as $detaa)
 <br><h3>Benefits & Others:</h3><br>
 <p>{{$detaa->job_benefit}} </p><br>
-<button type="submit" class="button" value="edit" style="margin-left:50%;"> EDIT</button>
-<a href="/displaypost/{{$detaa->post_id}}/delete"> <button type="button" class="button" value="delete" onclick="return confirm('Are you sure?This record and it`s details will be permanantly deleted!')" >DELETE</button></a>
-<a href="/searchpost"> <button type="button" class="button" value="back" >BACK</button></a>
+
+<button type="submit" class="button" value="apply" style="margin-left:70%;" id="mySubmit"> ACCEPT</button>
+<a href="/receiptoffer"> <button type="button" class="button" value="back">BACK</button></a>
 @if(session()->has('successMsg'))
 <div class="alert alert-success">
      {{ session()->get('successMsg') }}
@@ -208,7 +215,11 @@ height:20%;
   </form>
   @endforeach
 </div>
-
+<script>
+function myFunction() {
+  document.getElementById("mySubmit").disabled = true;
+}
+</script>
 </html>
 
 @endsection

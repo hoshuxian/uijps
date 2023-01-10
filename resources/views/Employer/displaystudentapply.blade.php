@@ -157,25 +157,6 @@ table th,td{
                 </select>
                 <h4>Per Page</h4>
             </div>
-<div class=search2>
-@foreach($deta as $detaa)
-    <form action="/displaystudentapply/{{$detaa->post_id}}/search" method="GET" role="search">
-        <div class="input-group">
-            <button class="searchbtn" type="submit" title="Search projects"><ion-icon name="search-outline"></ion-icon></button>
-            <input type="text" class="form-control mr-2" name="deta" placeholder="Search......" id="deta">
-            <a href="/displaystudentapply/{{ $detaa->post_id}}">&emsp;<button  class="refreshbtn" type="button" title="Refresh page"><ion-icon name="repeat-outline"></ion-icon></button></a>
-        </div>
-        @endforeach
-                    @if(!empty($successMsg))
-                        <div class="alert alert-success" role="alert"> {{ $successMsg }}</div>
-                    @endif
-
-                    @if(!empty($FailedMsg))
-                        <div class="alert alert-danger"> {{ $FailedMsg }}</div>
-                    @endif
-
-                    
-</div>
 </form>
 <div class = "table">
 <br>

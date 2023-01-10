@@ -621,7 +621,7 @@ color: #1DC4E7;
         </li>
 
         <li class="list">
-            <a href="/" style="--clr:#CD66FF;">
+            <a href="{{ url('/logout') }}" style="--clr:#CD66FF;">
                 <span class="icon"><ion-icon name="log-out-outline"></ion-icon></span>
                 <span class="text">Logout</span>
             </a>

@@ -48,6 +48,7 @@ Route::get('/resetpassword', function () {
     return view('/Login/resetpassword');
 });
 Route::post('/reset', 'App\Http\Controllers\UserController@reset');
+Route::get('/logout', 'App\Http\Controllers\UserController@logout');
 
 //Manage Admin
 Route::get('/createstdprofile', function () {
@@ -109,22 +110,22 @@ Route::get('/empfeedback', function () {
 });
 
 Route::post('/submitempfeedback', 'App\Http\Controllers\FeedbackController@submitempfeedback');
+Route::get('/searchfeedback', 'App\Http\Controllers\FeedbackController@viewfeedback');
+Route::get('/searchfeedback/search', 'App\Http\Controllers\FeedbackController@feedbacklist');
+Route::get('/feedback', 'App\Http\Controllers\FeedbackController@select');
+Route::get('/empfeedback', 'App\Http\Controllers\FeedbackController@select2');
+Route::get('/stdsearchfeedback', 'App\Http\Controllers\FeedbackController@viewstdfeedback');
+Route::get('/stdsearchfeedback/search', 'App\Http\Controllers\FeedbackController@stdfeedbacklist');
 
 //Manage search company Profile
 Route::get('/searchcompany', 'App\Http\Controllers\UserController@viewcompanylist');
 Route::get('/searchcompany/search', 'App\Http\Controllers\UserController@companylist');
 Route::get('/displaycompanyprofile/{reg_no}', 'App\Http\Controllers\UserController@displaycompanyprofile');
-//Route::get('/logout', [UserController::class, 'destroy'])
-                //->name('logout');
 
 //Manage search student Profile
 Route::get('/searchstudent', 'App\Http\Controllers\UserController@viewstdlist');
 Route::get('/searchstudent/search', 'App\Http\Controllers\UserController@stdlist');
 Route::get('/displaystudentprofile/{std_matric}', 'App\Http\Controllers\UserController@displaystudentprofile');
-
-//Manage Feedback
-Route::get('/searchfeedback', 'App\Http\Controllers\FeedbackController@viewfeedback');
-Route::get('/searchfeedback/search', 'App\Http\Controllers\FeedbackController@feedbacklist');
 
 //Manage Event
 Route::post('/createevent', 'App\Http\Controllers\EventController@createevent');
@@ -152,10 +153,27 @@ Route::get('/displayallpost/{post_id}', 'App\Http\Controllers\PostController@dis
 
 Route::get('/searchjob', 'App\Http\Controllers\PostController@viewjoblist');
 Route::post('/apply/{post_id}', 'App\Http\Controllers\PostController@apply');
-Route::get('/searchjob/search', 'App\Http\Controllers\PostController@joblist');
+//Route::get('/searchjob/search', 'App\Http\Controllers\PostController@joblist');
 Route::get('/displayjob/{post_id}', 'App\Http\Controllers\PostController@displayjob');
 
 Route::get('/displaystudentapply/{post_id}', 'App\Http\Controllers\PostController@displaystudentapply');
 Route::get('/display/{post_id}/{id}', 'App\Http\Controllers\POstController@display');
 Route::get('/displaystudentapply/{post_id}/search', 'App\Http\Controllers\PostController@searchapply');
 Route::post('/hired/{post_id}/{id}', 'App\Http\Controllers\PostController@hired');
+Route::get('/displayhiredlist/{post_id}', 'App\Http\Controllers\PostController@displayhiredlist');
+Route::get('/offerprofile/{post_id}/{id}', 'App\Http\Controllers\POstController@offerprofile');
+Route::get('/receiptoffer', 'App\Http\Controllers\POstController@receiptoffer');
+Route::get('/displayoffer/{post_id}', 'App\Http\Controllers\PostController@displayoffer');
+Route::post('/accept/{post_id}', 'App\Http\Controllers\PostController@accept');
+
+
+//Blacklist
+Route::get('/blacklist', function () {
+    return view('/Admin/blacklist');
+});
+Route::post('/createblacklist', 'App\Http\Controllers\UserController@createblacklist');
+Route::get('/searchblacklist', 'App\Http\Controllers\UserController@viewblacklist');
+Route::get('/searchblacklist/search', 'App\Http\Controllers\UserController@blacklist');
+Route::get('/searchblacklist/{id}', 'App\Http\Controllers\UserController@deleteblacklist');
+Route::get('/updateblacklist/{id}', 'App\Http\Controllers\UserController@updateblacklist');
+Route::post('/blacklistupdate', 'App\Http\Controllers\UserController@blacklistupdate');

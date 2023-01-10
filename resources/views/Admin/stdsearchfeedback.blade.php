@@ -22,11 +22,12 @@
   margin-left: 3%;
   margin-bottom: 15px;
   width: 120px;
-  background: white;
+  background: #094b65;
   border: 3px solid #094b65;
   font-size: 18px;
   font-weight: 500;
   border-radius: 10px;
+  color: white;
 }
 
 .employer{
@@ -34,12 +35,11 @@
   margin-left: 3%;
   margin-bottom: 15px;
   width: 120px;
-  background: #094b65;
+  background: white;
   border: 3px solid #094b65;
   font-size: 18px;
   font-weight: 500;
   border-radius: 10px;
-  color: white;
 }
 
 
@@ -117,11 +117,6 @@ table {
     margin-bottom: 3%;
     margin-top: -6%;
 
-}
-
-.student:hover{
-    background-color: #094b65;
-  color: white;
 }
 		select{
 		 	padding: 2px;
@@ -209,6 +204,11 @@ table {
     color: #cc0000;
 }
 
+.employer:hover{
+    background-color: #094b65;
+  color: white;
+}
+
 </style>
 <div class="choose">
     <img src="/logo.png"/>
@@ -219,8 +219,8 @@ table {
         <p>UMP Internship Job</p>
         <p>Portal System</p>
     </div>
-    <button onclick="location.href='{{ url('/stdsearchfeedback') }}'"type="submit" class="student" value="student"> STUDENT</button>
-    <button type="submit" class="employer" value="employer">EMPLOYER</button>
+    <button type="submit" class="student" value="student"> STUDENT</button>
+    <button onclick="location.href='{{ url('/searchfeedback') }}'" type="submit" class="employer" value="employer">EMPLOYER</button>
 </div>
 
 <div class="items-controller">
@@ -239,7 +239,7 @@ table {
         <div class="input-group">
             <button class="searchbtn" type="submit" title="Search projects"><ion-icon name="search-outline"></ion-icon></button>
             <input type="text" class="form-control mr-2" name="deta" placeholder="Search......" id="deta">
-            <a href="/searchfeedback">&emsp;<button  class="refreshbtn" type="button" title="Refresh page"><ion-icon name="repeat-outline"></ion-icon></button></a>
+            <a href="/stdsearchfeedback">&emsp;<button  class="refreshbtn" type="button" title="Refresh page"><ion-icon name="repeat-outline"></ion-icon></button></a>
         </div>
                     @if(!empty($successMsg))
                         <div class="alert alert-success"> {{ $successMsg }}</div>
@@ -259,7 +259,6 @@ table {
 	<th>Comment</th>
 	<th>Company Name</th>
 	<th>Student Name</th>
-	<th>Position</th>
   </tr>
 </thead>
 <tbody>
@@ -269,7 +268,6 @@ table {
 	<td >{{$detaa->comment}}</td>
 	<td>{{$detaa->company_name}}</td>
 	<td >{{$detaa->std_name}}</td>
-	<td>{{$detaa->position}}</td>
  </tr>
   @endforeach
   

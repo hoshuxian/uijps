@@ -172,7 +172,7 @@ form th{
 
 <tr>
 <th>Event Date:</th>
-<th><input type="text" class="text" placeholder="Date" name="date" required></th>
+<th><input type="text" class="text" placeholder="yyyy-mm-dd" name="date" required></th>
 </tr>
 
 <tr>

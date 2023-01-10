@@ -128,6 +128,9 @@ Route::get('/searchstudent/search', 'App\Http\Controllers\UserController@stdlist
 Route::get('/displaystudentprofile/{std_matric}', 'App\Http\Controllers\UserController@displaystudentprofile');
 
 //Manage Event
+Route::get('/createevent', function () {
+    return view('/Admin/createevent');
+});
 Route::post('/createevent', 'App\Http\Controllers\EventController@createevent');
 Route::get('/searchevent', 'App\Http\Controllers\EventController@vieweventlist');
 Route::get('/searchevent/search', 'App\Http\Controllers\EventController@eventlist');
